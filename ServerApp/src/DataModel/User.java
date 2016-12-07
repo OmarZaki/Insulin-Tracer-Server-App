@@ -1,8 +1,14 @@
 package DataModel;
 
 import java.sql.Date;
-
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
 public class User {
+	
+	public final static String _USER_TABLE="Users";
+	
 	// User Columns names
 	public final static String _ID = "id";
 	public final static String _FIRST_NAME = "fname";
@@ -14,7 +20,9 @@ public class User {
 	public final static String _ADMIN = "admin";
 	public final static String _TYPE = "type";
 	public final static String _CREATION_DATE = "creation_date";
-
+	/**
+	 * User's fields
+	 */
 	private int id;
 	private String firstName;
 	private String lastName;
@@ -102,8 +110,41 @@ public class User {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
+	public void setCreationDate(java.util.Date creationDate) {
+		this.creationDate = new java.sql.Date(creationDate.getTime());;
+	}
+	/**
+	 * OMAR: To validate the user fields, You can add more rule as its needed.  
+	 * 
+	 * @return
+	 */
+	public Boolean validate() {
+		Boolean result = false;
+		if (this.firstName != "" && this.lastName != "" && validateEmailFormat(this.email) && this.password != "") {
+			result = true;
+		}
+		return result;
 	}
 
+	/**
+	 * To validate the email address i used JavaMail package . see more
+	 * https://mvnrepository.com/artifact/javax.mail/mail/1.4 The pakacke in
+	 * Javax.mail.jar
+	 * 
+	 * @param email
+	 * @return
+	 */
+	public Boolean validateEmailFormat(String email) {
+		Boolean result = true;
+		try {
+
+			InternetAddress emailAddress = new InternetAddress(email);
+			emailAddress.validate();
+
+		} catch (AddressException ex) {
+			result = false;
+		}
+
+		return result;
+	}
 }

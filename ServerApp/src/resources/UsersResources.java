@@ -7,6 +7,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import DataModel.SqlFunctions;
 import DataModel.User;
 
 /**
@@ -17,17 +18,22 @@ import DataModel.User;
  */
 @Path("/users")
 public class UsersResources {
+
+	private SqlFunctions sql;
+	
 	@POST
 	@PermitAll
 	@Path("/register")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public User registerNewUser(){
-		// TODO get the object, 
-		// TODO check the data 
-		// TODO store the data 
-		// TODO return the user object
-		return new User();
+	public User regisrationRequest(User user){
+		User result = new User();
+		sql = new SqlFunctions();
+		result= sql.registratNewUser(user);
+		if (result!= null) {
+			return result; 
+		}
+		return result; 
 	}
 	
 	// user registration request
