@@ -47,8 +47,10 @@ public class UsersResources {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Boolean login(User user){
 		SqlFunctions sql = new SqlFunctions();
-		if(sql.findUserByEmail(user.getEmail())!=null){
-			return true;
+		User foundUser = sql.findUserByEmail(user.getEmail());
+		if(foundUser!=null){
+			if(foundUser.getPassword()==user.getPassword())
+				return true;
 		}
 		return false; 		
 	}
