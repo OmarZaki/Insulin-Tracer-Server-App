@@ -69,5 +69,36 @@ public class SqlFunctions {
 		return registredUser;
 	}
 
+	
+	/**
+	 * 
+	 * @param email
+	 * @return
+	 */
+	public User findUserByEmail(String email){
+		User user = new User();
+		if(user.validateEmailFormat(email)){
+			String sqlStatement = "SELECT * FROM "+User._USER_TABLE+" WHERE ("
+					+User._EMAIL+"= ?)";
+			try{
+				if(this.DBConn.Open()){
+					PreparedStatement prepStatement = this.DBConn.conn.prepareStatement(sqlStatement);
+					prepStatement.setString(1, email);
+					ResultSet result = prepStatement.executeQuery();
+					result.next();
+					System.out.println(result.getString(5));
+					if(result.getString(5).equals(email)){
+						user.setEmail(email);
+						return user;
+					}
+					return null;
+				}
+			} catch(SQLException e){
+				System.out.println("Error finding user.");
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
 
 }
