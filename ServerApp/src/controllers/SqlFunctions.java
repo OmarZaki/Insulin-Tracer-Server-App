@@ -122,7 +122,8 @@ public class SqlFunctions {
 					+ Meal._DESCRIPTION + "," 
 					+ Meal._IMAGE+ "," 
 					+ Meal._USERS_ID+ ","
-					+ ") VALUES(?,?,?,?) ";
+					+ Meal._DATE_TIME + ","
+					+ ") VALUES(?,?,?,?, ?) ";
 			try {
 				if (this.DBConn.Open()) { 
 					// ** create statement
@@ -131,6 +132,7 @@ public class SqlFunctions {
 					preparedStatement.setString(2, meal.getDescription());
 					preparedStatement.setString(3, meal.getImage());
 					preparedStatement.setInt(4, meal.getUsers_id());
+					preparedStatement.setDate(5, meal.getDate_time());
 					int result = preparedStatement.executeUpdate();
 					
 					// ** close the connection

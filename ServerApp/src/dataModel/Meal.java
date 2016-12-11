@@ -1,5 +1,7 @@
 package dataModel;
 
+import java.sql.Date;
+
 public class Meal {
 	
 	public final static String _Meal_TABLE="Meal";
@@ -9,12 +11,14 @@ public class Meal {
 	public final static String _TYPE = "type";
 	public final static String _DESCRIPTION = "description";
 	public final static String _IMAGE = "image";
+	public final static String _DATE_TIME = "date_time";
 	public final static String _USERS_ID = "Users_id";
 	
 	private int id;
 	private String type;
 	private String description;
 	private String image;
+	private Date date_time;
 	private int users_id;
 	public int getId() {
 		return id;
@@ -56,10 +60,17 @@ public class Meal {
 		Boolean result = false;
 		if (this.type != null && !this.type.equals("") && 
 				this.description != null && !this.description.equals("") && 
-				this.image != null && !this.image.equals("")) {
+				this.image != null && !this.image.equals("") && 
+				this.date_time!=null) {
 			result = true;
 		}
 		return result;
+	}
+	public Date getDate_time() {
+		return date_time;
+	}
+	public void setDate_time(Date date_time) {
+		this.date_time = date_time;
 	}
 	
 }

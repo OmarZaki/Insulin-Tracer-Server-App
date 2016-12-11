@@ -41,6 +41,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `diabetesDB`.`Meal` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `type` VARCHAR(45) NULL,
+  `date_time` DATETIME NULL,
   `description` VARCHAR(45) NULL,
   `image` VARCHAR(45) NULL,
   `Users_id` INT NOT NULL,
