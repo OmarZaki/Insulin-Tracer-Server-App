@@ -49,4 +49,11 @@ public class InsulinDose {
 		Users_id = users_id;
 	}
 	
+	public boolean validate(){
+		if(this.getQuantity()>0 &&
+				this.getDate()!=null)
+			return true;
+		return false;
+	}
+	
 }

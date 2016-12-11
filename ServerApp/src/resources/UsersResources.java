@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import controllers.SqlFunctions;
+import dataModel.InsulinDose;
 import dataModel.Meal;
 import dataModel.User;
 
@@ -88,13 +89,24 @@ public class UsersResources {
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean submitMeal(Meal meal){
 		SqlFunctions sql = new SqlFunctions();
-		if(meal.validate()){
-			if(sql.submitMeal(meal))
-				return true;
-		}
+		if(sql.insertMeal(meal))
+			return true;
 		return false; 		
 	}
 	// user insulin dose submit request 
+	@POST
+	@PermitAll
+	@Path("/insulin")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean submitInsulin(InsulinDose insulinDose){
+		SqlFunctions sql = new SqlFunctions();
+		if(sql.submitInsulinDose(insulinDose)){
+			return true;
+		}
+		return false;
+	}
+	
 	// user blood sugar request 
 	// user mediation request 
 	// user Data synchronize data

@@ -1,6 +1,7 @@
 package controllers;
 import java.sql.*;
 
+import dataModel.InsulinDose;
 import dataModel.Meal;
 import dataModel.User;
 /**
@@ -108,14 +109,14 @@ public class SqlFunctions {
 	}
 	
 	/***
-	 * Submit meal to the Database
+	 * Insert meal into the Database
 	 * @param meal
 	 * @return
 	 */
-	public Boolean submitMeal(Meal meal){
+	public Boolean insertMeal(Meal meal){
 		Meal newMeal = null;
 			if(meal.validate()){
-			String SQL_Statment = "INSERT INTO " + Meal._Meal_TABLE+"(" 
+				String SQL_Statment = "INSERT INTO " + Meal._Meal_TABLE+" (" 
 					+ Meal._TYPE + ","
 					+ Meal._DESCRIPTION + "," 
 					+ Meal._IMAGE+ "," 
@@ -139,6 +140,42 @@ public class SqlFunctions {
 				}
 			} catch (SQLException SQL_ex) {
 				System.out.println("[SqlFunctions.submitMeal] Error Inserting new Meal");
+				System.out.println(SQL_ex.getMessage());
+			}
+		} else {
+			// 
+			System.out.println("DATA_VALIATION_FORMAT_ERROR");
+		}
+		return false;
+	}
+	
+	/***
+	 * Mark InsulinDose as taken
+	 * @param insulinDose
+	 * @return
+	 */
+	public Boolean submitInsulinDose(InsulinDose insulinDose){
+		InsulinDose newInsulinDose = null;
+			if(insulinDose.validate()){
+			String SQL_Statment = "UPDATE " + InsulinDose._InsulinDose_TABLE
+					+ " SET " + InsulinDose._TAKEN + " = ?"
+					+ " WHERE " + InsulinDose._ID + " = ?";
+			try {
+				if (this.DBConn.Open()) { 
+					// ** create statement
+					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(SQL_Statment);
+					preparedStatement.setBoolean(1, true);
+					preparedStatement.setInt(2, insulinDose.getId());
+					int result = preparedStatement.executeUpdate();
+					
+					// ** close the connection
+					DBConn.Close();
+					if (result == 1) {
+						return true;
+					}
+				}
+			} catch (SQLException SQL_ex) {
+				System.out.println("[SqlFunctions.submitInsulinDose] Error updating InsulinDose");
 				System.out.println(SQL_ex.getMessage());
 			}
 		} else {
