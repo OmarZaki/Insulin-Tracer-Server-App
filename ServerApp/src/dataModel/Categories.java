@@ -15,7 +15,7 @@ public class Categories {
 	
 	private int id;
 	private Date date_time;
-	private float value;
+	private String value;
 	private int Users_id;
 	private int Category_name_id;
 	public int getId() {
@@ -30,10 +30,10 @@ public class Categories {
 	public void setDate_time(Date date_time) {
 		this.date_time = date_time;
 	}
-	public float getValue() {
+	public String getValue() {
 		return value;
 	}
-	public void setValue(float value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 	public int getUsers_id() {
@@ -47,6 +47,13 @@ public class Categories {
 	}
 	public void setCategory_name_id(int category_name_id) {
 		Category_name_id = category_name_id;
+	}
+	
+	public boolean validate(){
+		if(this.getCategory_name_id()>=0 && this.getCategory_name_id()<4
+				&& this.getUsers_id()>0 && this.getValue()!=null)
+			return true;
+		return false;
 	}
 	
 }
