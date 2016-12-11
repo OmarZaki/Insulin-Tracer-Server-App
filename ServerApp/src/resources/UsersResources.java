@@ -12,6 +12,7 @@ import controllers.SqlFunctions;
 import dataModel.Categories;
 import dataModel.InsulinDose;
 import dataModel.Meal;
+import dataModel.Messages;
 import dataModel.User;
 
 /**
@@ -108,7 +109,19 @@ public class UsersResources {
 		return false;
 	}
 	
-	// user blood sugar request 
+	// user messages request 
+	@POST
+	@PermitAll
+	@Path("/messages")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean submitMessages(Messages messages){
+		SqlFunctions sql = new SqlFunctions();
+		if(sql.insertMessages(messages))
+			return true;
+		return false; 		
+	}
+	
 	// user medication request 
 	@POST
 	@PermitAll

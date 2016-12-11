@@ -4,6 +4,7 @@ import java.sql.*;
 import dataModel.Categories;
 import dataModel.InsulinDose;
 import dataModel.Meal;
+import dataModel.Messages;
 import dataModel.User;
 /**
  * This that contains 
@@ -205,6 +206,44 @@ public class SqlFunctions {
 					preparedStatement.setDate(2, categories.getDate_time());
 					preparedStatement.setInt(3, categories.getUsers_id());
 					preparedStatement.setInt(4, categories.getCategory_name_id());
+					int result = preparedStatement.executeUpdate();
+					
+					// ** close the connection
+					DBConn.Close();
+					if (result == 1) {
+						return true;
+					}
+				}
+			} catch (SQLException SQL_ex) {
+				System.out.println("[SqlFunctions.submitMeal] Error Inserting new Reminder");
+				System.out.println(SQL_ex.getMessage());
+			}
+		} else {
+			// 
+			System.out.println("DATA_VALIATION_FORMAT_ERROR");
+		}
+		return false;
+	}
+	
+	/***
+	 * Insert Categories entry into the Database
+	 * @param meal
+	 * @return
+	 */
+	public Boolean insertMessages(Messages messages){
+			if(messages.validate()){
+				String SQL_Statment = "INSERT INTO " + Messages._Messages_TABLE+" (" 
+					+ Messages._TEXT + ","
+					+ Messages._DATE_TIME + "," 
+					+ Messages._USERS_ID+ "," 
+					+ ") VALUES(?,?,?) ";
+			try {
+				if (this.DBConn.Open()) { 
+					// ** create statement
+					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(SQL_Statment);
+					preparedStatement.setString(1, messages.getText());
+					preparedStatement.setDate(2, messages.getDate_time());
+					preparedStatement.setInt(3, messages.getUsers_id());
 					int result = preparedStatement.executeUpdate();
 					
 					// ** close the connection
