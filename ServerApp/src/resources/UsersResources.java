@@ -6,9 +6,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType; 
- 
+import javax.ws.rs.core.MediaType;
 
+import DataModel.Meal;
 import DataModel.SqlFunctions;
 import DataModel.User;
 
@@ -54,7 +54,7 @@ public class UsersResources {
 		SqlFunctions sql = new SqlFunctions();
 		User foundUser = sql.findUserByEmail(user.getEmail());
 		if(foundUser!=null){
-			if(foundUser.getPassword()==user.getPassword())
+			if(foundUser.getPassword().equals(user.getPassword()))
 				return true;
 		}
 		return false; 		
@@ -80,6 +80,20 @@ public class UsersResources {
 	*/
 	
 	// user meal submit request
+	
+	@POST
+	@PermitAll
+	@Path("/meal")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean submitMeal(Meal meal){
+		SqlFunctions sql = new SqlFunctions();
+		if(meal.validate()){
+			if(sql.submitMeal(meal))
+				return true;
+		}
+		return false; 		
+	}
 	// user insulin dose submit request 
 	// user blood sugar request 
 	// user mediation request 
