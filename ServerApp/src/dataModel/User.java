@@ -1,4 +1,4 @@
-package DataModel;
+package dataModel;
 
 import java.sql.Date;
 import javax.mail.internet.AddressException;

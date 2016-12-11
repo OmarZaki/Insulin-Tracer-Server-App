@@ -1,4 +1,4 @@
-package DataModel;
+package dataModel;
 
 public class Meal {
 	
