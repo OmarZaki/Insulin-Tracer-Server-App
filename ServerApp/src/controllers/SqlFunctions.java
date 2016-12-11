@@ -1,6 +1,7 @@
 package controllers;
 import java.sql.*;
 
+import dataModel.Categories;
 import dataModel.InsulinDose;
 import dataModel.Meal;
 import dataModel.User;
@@ -174,6 +175,46 @@ public class SqlFunctions {
 				}
 			} catch (SQLException SQL_ex) {
 				System.out.println("[SqlFunctions.submitInsulinDose] Error updating InsulinDose");
+				System.out.println(SQL_ex.getMessage());
+			}
+		} else {
+			// 
+			System.out.println("DATA_VALIATION_FORMAT_ERROR");
+		}
+		return false;
+	}
+	
+	/***
+	 * Insert Categories entry into the Database
+	 * @param meal
+	 * @return
+	 */
+	public Boolean insertCategories(Categories categories){
+			if(categories.validate()){
+				String SQL_Statment = "INSERT INTO " + Categories._Categories_TABLE+" (" 
+					+ Categories._VALUE + ","
+					+ Categories._DATE_TIME + "," 
+					+ Categories._USERS_ID+ "," 
+					+ Categories._CATEGORY_NAME_ID+ ","
+					+ ") VALUES(?,?,?,?) ";
+			try {
+				if (this.DBConn.Open()) { 
+					// ** create statement
+					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(SQL_Statment);
+					preparedStatement.setString(1, categories.getValue());
+					preparedStatement.setDate(2, categories.getDate_time());
+					preparedStatement.setInt(3, categories.getUsers_id());
+					preparedStatement.setInt(4, categories.getCategory_name_id());
+					int result = preparedStatement.executeUpdate();
+					
+					// ** close the connection
+					DBConn.Close();
+					if (result == 1) {
+						return true;
+					}
+				}
+			} catch (SQLException SQL_ex) {
+				System.out.println("[SqlFunctions.submitMeal] Error Inserting new Reminder");
 				System.out.println(SQL_ex.getMessage());
 			}
 		} else {

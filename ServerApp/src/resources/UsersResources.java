@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import controllers.SqlFunctions;
+import dataModel.Categories;
 import dataModel.InsulinDose;
 import dataModel.Meal;
 import dataModel.User;
@@ -108,7 +109,19 @@ public class UsersResources {
 	}
 	
 	// user blood sugar request 
-	// user mediation request 
+	// user medication request 
+	@POST
+	@PermitAll
+	@Path("/categories")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean submitCategories(Categories categories){
+		SqlFunctions sql = new SqlFunctions();
+		if(sql.insertCategories(categories))
+			return true;
+		return false; 		
+	}
+	
 	// user Data synchronize data
 	
 	
