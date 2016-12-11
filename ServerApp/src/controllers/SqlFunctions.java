@@ -114,7 +114,6 @@ public class SqlFunctions {
 	 * @return
 	 */
 	public Boolean insertMeal(Meal meal){
-		Meal newMeal = null;
 			if(meal.validate()){
 				String SQL_Statment = "INSERT INTO " + Meal._Meal_TABLE+" (" 
 					+ Meal._TYPE + ","
@@ -155,7 +154,6 @@ public class SqlFunctions {
 	 * @return
 	 */
 	public Boolean submitInsulinDose(InsulinDose insulinDose){
-		InsulinDose newInsulinDose = null;
 			if(insulinDose.validate()){
 			String SQL_Statment = "UPDATE " + InsulinDose._InsulinDose_TABLE
 					+ " SET " + InsulinDose._TAKEN + " = ?"
