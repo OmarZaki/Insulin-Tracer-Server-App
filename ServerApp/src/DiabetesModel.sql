@@ -81,7 +81,6 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `diabetesDB`.`InsulinDose` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `quantity` FLOAT NULL,
-  `time` TIME NULL,
   'taken' TINYINT(1) DEFAULT 0,
   `date` DATETIME NULL,
   `Users_id` INT NOT NULL,
