@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `diabetesDB`.`InsulinDose` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `quantity` FLOAT NULL,
   `taken` TINYINT(1) DEFAULT 0,
-  `date` DATETIME NULL,
+  `date_time` DATETIME NULL,
   `Users_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_InsulinDose_Users1_idx` (`Users_id` ASC),

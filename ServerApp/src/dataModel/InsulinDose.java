@@ -10,13 +10,13 @@ public class InsulinDose {
 	public final static String _ID = "id";
 	public final static String _QUANTITY = "quantity";
 	public final static String _TAKEN = "taken";
-	public final static String _DATE = "date";
+	public final static String _DATE_TIME = "date_time";
 	public final static String _USERS_ID = "Users_id";
 	
 	private int id;
 	private float quantity;
 	private boolean taken;
-	private Date date;
+	private Date date_time;
 	private int Users_id;
 	public int getId() {
 		return id;
@@ -36,11 +36,11 @@ public class InsulinDose {
 	public void setTaken(boolean taken) {
 		this.taken = taken;
 	}
-	public Date getDate() {
-		return date;
+	public Date getDate_time() {
+		return date_time;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate_time(Date date_time) {
+		this.date_time = date_time;
 	}
 	public int getUsers_id() {
 		return Users_id;
@@ -51,7 +51,7 @@ public class InsulinDose {
 	
 	public boolean validate(){
 		if(this.getQuantity()>0 &&
-				this.getDate()!=null)
+				this.getDate_time()!=null)
 			return true;
 		return false;
 	}
