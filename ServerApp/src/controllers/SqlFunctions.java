@@ -1,5 +1,8 @@
-package DataModel;
+package controllers;
 import java.sql.*;
+
+import DataModel.Meal;
+import DataModel.User;
 /**
  * This that contains 
  * @author OMAR

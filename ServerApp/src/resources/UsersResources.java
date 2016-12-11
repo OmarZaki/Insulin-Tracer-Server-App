@@ -9,8 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import DataModel.Meal;
-import DataModel.SqlFunctions;
 import DataModel.User;
+import controllers.SqlFunctions;
 
 /**
  * This class contains all User resources 
