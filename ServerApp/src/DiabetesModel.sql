@@ -128,7 +128,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `diabetesDB`.`Categories` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `date_time` DATETIME NULL,
-  `value` FLOAT NULL,
+  `value` VARCHAR(45) NULL,
   `Users_id` INT NOT NULL,
   `Category_name_id` INT NOT NULL,
   PRIMARY KEY (`id`),
