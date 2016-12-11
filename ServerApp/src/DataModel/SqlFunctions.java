@@ -71,7 +71,7 @@ public class SqlFunctions {
 
 	
 	/**
-	 * 
+	 * Find a user by E-Mail
 	 * @param email
 	 * @return
 	 */
@@ -99,6 +99,47 @@ public class SqlFunctions {
 			}
 		}
 		return null;
+	}
+	
+	/***
+	 * Submit meal to the Database
+	 * @param meal
+	 * @return
+	 */
+	public Boolean submitMeal(Meal meal){
+		Meal newMeal = null;
+			if(meal.validate()){
+			String SQL_Statment = "INSERT INTO " + Meal._Meal_TABLE+"(" 
+					+ Meal._TYPE + ","
+					+ Meal._DESCRIPTION + "," 
+					+ Meal._IMAGE+ "," 
+					+ Meal._USERS_ID+ ","
+					+ ") VALUES(?,?,?,?) ";
+			try {
+				if (this.DBConn.Open()) { 
+					// ** create statement
+					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(SQL_Statment);
+					preparedStatement.setString(1, meal.getType());
+					preparedStatement.setString(2, meal.getDescription());
+					preparedStatement.setString(3, meal.getImage());
+					preparedStatement.setInt(4, meal.getUsers_id());
+					int result = preparedStatement.executeUpdate();
+					
+					// ** close the connection
+					DBConn.Close();
+					if (result == 1) {
+						return true;
+					}
+				}
+			} catch (SQLException SQL_ex) {
+				System.out.println("[SqlFunctions.submitMeal] Error Inserting new Meal");
+				System.out.println(SQL_ex.getMessage());
+			}
+		} else {
+			// 
+			System.out.println("DATA_VALIATION_FORMAT_ERROR");
+		}
+		return false;
 	}
 
 }
