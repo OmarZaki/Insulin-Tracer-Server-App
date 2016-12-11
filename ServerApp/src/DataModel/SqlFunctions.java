@@ -12,6 +12,7 @@ public class SqlFunctions {
 		this.DBConn = new DatabaseConnection();
 		
 	}
+	
 	/**
 	 * User SQL Registration Query to the database. 
 	 * 
@@ -31,8 +32,9 @@ public class SqlFunctions {
 					+ User._TYPE+","
 					+ User._ADMIN+","
 					+ User._CREATION_DATE +","
-					+ User._TOKEN
-					+ ") VALUES(?,?,?,?,?,?,?,?,?) ";
+					+ User._TOKEN+","
+					+ User._ADDRESS
+					+ ") VALUES(?,?,?,?,?,?,?,?,?,?) ";
 			try {
 				if (this.DBConn.Open()) { 
 					// ** create statement
@@ -46,6 +48,7 @@ public class SqlFunctions {
 					preparedStatement.setBoolean(7, user.getAdmin());
 					preparedStatement.setDate(8, user.getCreationDate());
 					preparedStatement.setString(9, user.getToken());
+					preparedStatement.setString(10, user.getAddress());
 					int result = preparedStatement.executeUpdate();
 					
 					// ** close the connection

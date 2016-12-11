@@ -20,6 +20,7 @@ public class User {
 	public final static String _ADMIN = "admin";
 	public final static String _TYPE = "type";
 	public final static String _CREATION_DATE = "creation_date";
+	public final static String _ADDRESS="address"; 
 	/**
 	 * User's fields
 	 */
@@ -33,6 +34,15 @@ public class User {
 	private Boolean type;
 	private String token;
 	private Date creationDate;
+	private String Address;
+
+	public String getAddress() {
+		return Address;
+	}
+
+	public void setAddress(String address) {
+		Address = address;
+	}
 
 	public int getId() {
 		return id;
