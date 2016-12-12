@@ -1,14 +1,28 @@
 package dataModel;
 
-import java.sql.Date;
+import java.io.IOException; 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.gson.Gson;
+
+
 @XmlRootElement
 public class User {
-	
-	public final static String _USER_TABLE="Users";
-	
+
+	public final static String _USER_TABLE = "Users";
+
 	// User Columns names
 	public final static String _ID = "id";
 	public final static String _FIRST_NAME = "fname";
@@ -20,7 +34,7 @@ public class User {
 	public final static String _ADMIN = "admin";
 	public final static String _TYPE = "type";
 	public final static String _CREATION_DATE = "creation_date";
-	public final static String _ADDRESS="address"; 
+	public final static String _ADDRESS = "address";
 	/**
 	 * User's fields
 	 */
@@ -32,16 +46,29 @@ public class User {
 	private String password;
 	private Boolean admin;
 	private Boolean type;
-	private String token;
+	private String token; 
 	private Date creationDate;
-	private String Address;
+	private String address; 
+	private Date birthDate;
+
+	public User() {
+	}
+
+	public Date getBirthDate() {
+		return this.birthDate;
+	}
+
+	public void setBirthDate(java.util.Date birthDate) {
+//		this.birthDate = new java.sql.Date(birthDate.getTime());
+		this.birthDate = birthDate; 
+	}
 
 	public String getAddress() {
-		return Address;
+		return address;
 	}
 
 	public void setAddress(String address) {
-		Address = address;
+		this.address = address;
 	}
 
 	public int getId() {
@@ -121,10 +148,12 @@ public class User {
 	}
 
 	public void setCreationDate(java.util.Date creationDate) {
-		this.creationDate = new java.sql.Date(creationDate.getTime());;
+		this.creationDate = creationDate;
+		;
 	}
+
 	/**
-	 * OMAR: To validate the user fields, You can add more rule as its needed.  
+	 * OMAR: To validate the user fields, You can add more rule as its needed.
 	 * 
 	 * @return
 	 */
@@ -156,5 +185,28 @@ public class User {
 		}
 
 		return result;
+	}
+	/**
+	 * Convert to User Json String to User Object.
+	 * @param jsonObject
+	 * @return
+	 */
+	public static User convertToObject(String jsonObject) {
+		Gson gson = new Gson();
+		User user = gson.fromJson(jsonObject, User.class);
+		return user;
+
+	}
+	
+	/**
+	 * Convert User object to String JSON format. 
+	 * 
+	 * @param user 
+	 * @return String JSON format it return null if fails.
+	 */
+	public static String convertToString(User user){
+		Gson gson = new Gson();
+		String userStringObject= gson.toJson(user); 
+		return userStringObject;
 	}
 }

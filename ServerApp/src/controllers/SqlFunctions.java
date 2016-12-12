@@ -49,7 +49,7 @@ public class SqlFunctions {
 					preparedStatement.setString(5, user.getPhoneNumber());
 					preparedStatement.setBoolean(6, user.getType()); 
 					preparedStatement.setBoolean(7, user.getAdmin());
-					preparedStatement.setDate(8, user.getCreationDate());
+					preparedStatement.setDate(8, new java.sql.Date(user.getCreationDate().getTime()));
 					preparedStatement.setString(9, user.getToken());
 					preparedStatement.setString(10, user.getAddress());
 					int result = preparedStatement.executeUpdate();

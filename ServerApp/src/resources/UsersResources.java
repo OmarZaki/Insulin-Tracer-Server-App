@@ -8,6 +8,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+
 import controllers.SqlFunctions;
 import dataModel.Meal;
 import dataModel.User;
@@ -32,14 +34,13 @@ public class UsersResources {
 	@Path("/register")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public User regisrationRequest(User user){
-		User result = new User();
+	public String regisrationRequest(String user){
+		System.out.println("Registration is here ! ");
+		System.out.println(user); 
+		User userObj = User.convertToObject(user); 
 		sql = new SqlFunctions();
-		result= sql.registratNewUser(user);
-		if (result!= null) {
-			return result; 
-		}
-		return result; 
+		User registeredUser= sql.registratNewUser(userObj);
+		return User.convertToString(registeredUser) ;
 	}
 	
 	// user registration request
@@ -95,9 +96,7 @@ public class UsersResources {
 		return false; 		
 	}
 	// user insulin dose submit request 
-	// user blood sugar request 
-	// user mediation request 
-	// user Data synchronize data
+		
 	
 	
 	

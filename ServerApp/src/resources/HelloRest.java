@@ -16,6 +16,7 @@ public class HelloRest {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String sayHtmlHello() {
+		System.out.println("Hello here ! ");
 		return "Hello from Jersey";
 	}
 
