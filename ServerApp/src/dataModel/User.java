@@ -1,20 +1,11 @@
 package dataModel;
-
-import java.io.IOException; 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+ 
 import java.util.Date;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+ 
 import com.google.gson.Gson;
 
 
@@ -26,7 +17,7 @@ public class User {
 	// User Columns names
 	public final static String _ID = "id";
 	public final static String _FIRST_NAME = "fname";
-	public final static String _LAST_NAME = "fname";
+	public final static String _LAST_NAME = "lname";
 	public final static String _EMAIL = "email";
 	public final static String _PASSWORD = "password";
 	public final static String _PHONE_NUMBER = "phone_number";
@@ -35,6 +26,7 @@ public class User {
 	public final static String _TYPE = "type";
 	public final static String _CREATION_DATE = "creation_date";
 	public final static String _ADDRESS = "address";
+	 public final static String _BIRTH_DATE= "birth_date";
 	/**
 	 * User's fields
 	 */
@@ -209,4 +201,5 @@ public class User {
 		String userStringObject= gson.toJson(user); 
 		return userStringObject;
 	}
+
 }

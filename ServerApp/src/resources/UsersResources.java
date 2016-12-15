@@ -1,17 +1,18 @@
 package resources;
 
 import javax.annotation.security.PermitAll;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+import javax.ws.rs.Consumes; 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+ 
+import com.google.gson.JsonObject;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-
-import controllers.SqlFunctions;
+import controllers.SqlFunctions; 
+import dataModel.InsulinDose;
 import dataModel.Meal;
+import dataModel.Messages;
 import dataModel.User;
 
 /**
@@ -42,6 +43,24 @@ public class UsersResources {
 		User registeredUser= sql.registratNewUser(userObj);
 		return User.convertToString(registeredUser) ;
 	}
+	@POST
+	@PermitAll
+	@Path("/IsEmailExist")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String CheckIfEmailIsExist(String user){
+		System.out.println("Check if the email is exist! ");
+//		System.out.println(user); 
+		User userObj = User.convertToObject(user); 
+		sql = new SqlFunctions();
+		Boolean IsExsist= sql.IsUserExsist(userObj);
+		// set JSON as String object.
+		JsonObject jsonObject = new JsonObject(); 
+		jsonObject.addProperty("result", IsExsist);
+		System.out.println(jsonObject.toString());
+		return jsonObject.toString();
+		
+	}
 	
 	// user registration request
 	// user logging in request 
@@ -51,14 +70,16 @@ public class UsersResources {
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Boolean login(User user){
+	public String login(String user){
+		System.out.println(user);
 		SqlFunctions sql = new SqlFunctions();
-		User foundUser = sql.findUserByEmail(user.getEmail());
+		User foundUser = sql.findUserByEmail(User.convertToObject(user));
 		if(foundUser!=null){
-			if(foundUser.getPassword().equals(user.getPassword()))
-				return true;
+			return User.convertToString(foundUser); 
 		}
-		return false; 		
+		JsonObject jsonObject= new JsonObject();
+		jsonObject.addProperty("result", false);
+		return jsonObject.toString(); 		
 	}
 	
 	/***
@@ -89,13 +110,36 @@ public class UsersResources {
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean submitMeal(Meal meal){
 		SqlFunctions sql = new SqlFunctions();
-		if(meal.validate()){
-			if(sql.submitMeal(meal))
-				return true;
-		}
+		if(sql.insertMeal(meal))
+			return true;
 		return false; 		
 	}
 	// user insulin dose submit request 
+	@POST
+	@PermitAll
+	@Path("/insulin")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean submitInsulin(InsulinDose insulinDose){
+		SqlFunctions sql = new SqlFunctions();
+		if(sql.submitInsulinDose(insulinDose)){
+			return true;
+		}
+		return false;
+	}
+	
+	// user messages request 
+	@POST
+	@PermitAll
+	@Path("/messages")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean submitMessages(Messages messages){
+		SqlFunctions sql = new SqlFunctions();
+		if(sql.insertMessages(messages))
+			return true;
+		return false; 		
+	} 
 		
 	
 	
