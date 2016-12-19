@@ -11,7 +11,8 @@ import javax.ws.rs.core.MediaType;
  
 import com.google.gson.JsonObject;
 
-import controllers.SqlFunctions; 
+import controllers.SqlFunctions;
+import dataModel.Categories;
 import dataModel.InsulinDose;
 import dataModel.Meal;
 import dataModel.Messages;
@@ -129,6 +130,20 @@ public class UsersResources {
 		}
 		return false;
 	}
+	
+	//user categories request
+		@POST
+		@PermitAll
+		@Path("/categories")
+		@Consumes(MediaType.APPLICATION_JSON)
+		@Produces(MediaType.APPLICATION_JSON)
+		public boolean submitCategories(Categories categories){
+			SqlFunctions sql = new SqlFunctions();
+			if(sql.insertCategories(categories)){
+				return true;
+			}
+			return false;
+		}
 	
 	// user messages request 
 	@POST
