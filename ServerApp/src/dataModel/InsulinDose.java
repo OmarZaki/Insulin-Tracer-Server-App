@@ -1,23 +1,32 @@
 package dataModel;
 
 import java.sql.Date;
+import java.util.List;
+
+import com.google.gson.Gson;
 
 public class InsulinDose {
 
-	public final static String _InsulinDose_TABLE="InsulinDose";
-	
+	public final static String _InsulinDose_TABLE = "insulinDose";
+    public static final String _DATE_FORMAT_NOW="yyyy-MM-dd HH:mm:ss";
+	    
 	// InsulinDose Column names
 	public final static String _ID = "id";
 	public final static String _QUANTITY = "quantity";
 	public final static String _TAKEN = "taken";
 	public final static String _DATE_TIME = "date_time";
 	public final static String _USERS_ID = "Users_id";
-	
+    public static final String _ORIGANL_ID = "o_id";
+
+    
 	private int id;
 	private float quantity;
 	private boolean taken;
 	private Date date_time;
 	private int Users_id;
+	private int original_id;
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -30,7 +39,7 @@ public class InsulinDose {
 	public void setQuantity(float quantity) {
 		this.quantity = quantity;
 	}
-	public boolean isTaken() {
+	public boolean getTaken() {
 		return taken;
 	}
 	public void setTaken(boolean taken) {
@@ -48,12 +57,53 @@ public class InsulinDose {
 	public void setUsers_id(int users_id) {
 		Users_id = users_id;
 	}
-	
+	public int getOriginal_id() {
+		return original_id;
+	}
+	public void setOriginal_id(int original_id) {
+		this.original_id = original_id;
+	}
+	/**
+	 * Validate the 
+	 * @return
+	 */
 	public boolean validate(){
 		if(this.getQuantity()>0 &&
 				this.getDate_time()!=null)
 			return true;
 		return false;
+	}
+	
+	/**
+	 * convert ArrayList to JSON string 
+	 * @param insulinDose
+	 * @return
+	 */
+	public static String convertListToJson(List<InsulinDose> insulinDose) {
+		Gson gson = new Gson();
+		String insulinDoseAsString = gson.toJson(insulinDose);
+		return insulinDoseAsString;
+	}
+	
+	/**
+	 * Convert on String JSON object of InsulinDose to 	InsulinDose Java Object;
+	 * @param insulinDoseAsString
+	 * @return
+	 */
+	public static InsulinDose convertStringToObject(String insulinDoseAsString){
+		Gson gson = new Gson();
+		InsulinDose dose = gson.fromJson(insulinDoseAsString, InsulinDose.class);
+		return dose;
+	}
+	/**
+	 * convert Object to Json string. 
+	 * @param insulinDose
+	 * @return
+	 */
+	public String convertObjectToString(InsulinDose insulinDose){
+		Gson gson = new Gson(); 
+		String dose= gson.toJson(insulinDose);
+		return dose;
 	}
 	
 }
