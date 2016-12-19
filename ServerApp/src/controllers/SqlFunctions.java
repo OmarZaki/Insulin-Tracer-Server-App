@@ -1,8 +1,7 @@
 package controllers;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+ 
 
 import dataModel.Categories;
 import dataModel.InsulinDose;
@@ -104,7 +103,8 @@ public class SqlFunctions {
 						foundUser.setBirthDate(result.getDate(User._BIRTH_DATE));
 						foundUser.setToken(result.getString(User._TOKEN));
 						foundUser.setCreationDate(result.getDate(User._CREATION_DATE));
-						foundUser.setAdmin(result.getBoolean(User._ADMIN));				
+						foundUser.setAdmin(result.getBoolean(User._ADMIN));
+						
 						return foundUser;
 						
 					}
@@ -291,67 +291,6 @@ public class SqlFunctions {
 		}
 
 		return null;
-	}
-	/**
-	 * get all insulin dose for a specific user. 
-	 * @param user
-	 * @return
-	 */
-	public List<InsulinDose> getAllInslinDoses(User user) {
-		// TODO 1. Find User by its email, Use User's ID to retrieve user's dose records 
-		List<InsulinDose> allDoses = null;
-		User originalUser=findUserByEmail(user); 
-		if(originalUser!= null){
-			String sqlStatementGetAllUserDoses = "SELECT * FROM "+ InsulinDose._InsulinDose_TABLE + " WHERE "+ InsulinDose._USERS_ID +"=?";
-			try{
-				if(this.DBConn.Open()){
-					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(sqlStatementGetAllUserDoses); 
-					preparedStatement.setInt(1, originalUser.getId());
-					ResultSet result = preparedStatement.executeQuery(); 
-					allDoses = new ArrayList<InsulinDose>();
-					while(result.next()){
-						InsulinDose dose= new InsulinDose();
-						dose.setId(result.getInt(InsulinDose._ID));
-						dose.setQuantity(result.getInt(InsulinDose._QUANTITY));
-						dose.setDate_time(result.getDate(InsulinDose._DATE_TIME));
-						dose.setTaken(result.getBoolean(InsulinDose._TAKEN));
-						dose.setUsers_id(result.getInt(InsulinDose._USERS_ID));
-						allDoses.add(dose);
-					}
-					this.DBConn.Close();
-				}
-			}catch(SQLException ex) {
-					System.out.println(ex.getMessage());
-			}
-		}
-		
-		return allDoses;
-	}
-	/**
-	 * change the Taken value of specific dose ; 
-	 * @param doseObj
-	 * @return
-	 */
-	public boolean UpdateInsulinDoseTakenFlag(InsulinDose doseObj) {
-		
-		boolean  taken = false; 
-		String sqlStatement = "UPDATE " + InsulinDose._InsulinDose_TABLE + " SET "+InsulinDose._TAKEN +"=?" 
-		+ " WHERE " + InsulinDose._ID+"=?";
-		try{
-		if(this.DBConn.Open()){
-			PreparedStatement preparedStatement= this.DBConn.conn.prepareStatement(sqlStatement);
-			preparedStatement.setBoolean(1, doseObj.getTaken());
-			preparedStatement.setInt(2, doseObj.getOriginal_id());
-			long row = preparedStatement.executeUpdate();
-			if(row !=0){
-				taken = true;
-			}
-		}
-		}catch(SQLException ex){
-			System.out.println(ex.getMessage());
-		}
-		
-		return taken;
 	}
 	
 

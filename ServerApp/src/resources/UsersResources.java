@@ -1,7 +1,5 @@
 package resources;
 
-import java.util.List;
-
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes; 
 import javax.ws.rs.POST;
@@ -143,44 +141,7 @@ public class UsersResources {
 		return false; 		
 	} 
 		
-	//-------> InsulinDoses Resources <-------------//
-	/**
-	 * 
-	 * @param user
-	 * @return
-	 */
-	@POST
-	@PermitAll
-	@Path("/allDoses")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public String getAllInsulinDosesForUser(String user){
-		String listString ="";
-		User userObj = User.convertToObject(user); 
-		SqlFunctions sql = new SqlFunctions();
-		List<InsulinDose> insulinDose = sql.getAllInslinDoses(userObj);
-		if(insulinDose !=null){
-			listString=InsulinDose.convertListToJson(insulinDose);
-			}
-		return listString; 		
-	}  
 	
-	
-	@POST
-	@PermitAll
-	@Path("/setTakenTrue")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public String setTakenTrue(String dose){
-		JsonObject jsonObject= new JsonObject(); // returned object ; 
-		InsulinDose doseObj = InsulinDose.convertStringToObject(dose); 
-		SqlFunctions sql = new SqlFunctions();
-		boolean taken = sql.UpdateInsulinDoseTakenFlag(doseObj);
-		if(taken !=false){	
-			jsonObject.addProperty("result", true);
-		}
-		return jsonObject.toString(); 		
-	}  
 	
 	
 }
