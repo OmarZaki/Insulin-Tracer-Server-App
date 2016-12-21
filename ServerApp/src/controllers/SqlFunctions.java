@@ -101,9 +101,9 @@ public class SqlFunctions {
 						foundUser.setPassword(result.getString(User._PASSWORD));
 						foundUser.setPhoneNumber(result.getString(User._PHONE_NUMBER));
 						foundUser.setAddress(result.getString(User._ADDRESS));
-						foundUser.setBirthDate(result.getDate(User._BIRTH_DATE));
+						foundUser.setBirthDate(new Date(result.getDate(User._BIRTH_DATE).getTime()));
 						foundUser.setToken(result.getString(User._TOKEN));
-						foundUser.setCreationDate(result.getDate(User._CREATION_DATE));
+						foundUser.setCreationDate(new Date(result.getDate(User._CREATION_DATE).getTime()));
 						foundUser.setAdmin(result.getBoolean(User._ADMIN));				
 						return foundUser;
 						

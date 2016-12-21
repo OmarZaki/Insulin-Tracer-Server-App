@@ -7,6 +7,7 @@ import javax.mail.internet.InternetAddress;
 import javax.xml.bind.annotation.XmlRootElement;
  
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 @XmlRootElement
@@ -184,7 +185,9 @@ public class User {
 	 * @return
 	 */
 	public static User convertToObject(String jsonObject) {
-		Gson gson = new Gson();
+		Gson gson = new  GsonBuilder()
+	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .create();
 		User user = gson.fromJson(jsonObject, User.class);
 		return user;
 
@@ -197,7 +200,9 @@ public class User {
 	 * @return String JSON format it return null if fails.
 	 */
 	public static String convertToString(User user){
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder()
+	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .create();
 		String userStringObject= gson.toJson(user); 
 		return userStringObject;
 	}

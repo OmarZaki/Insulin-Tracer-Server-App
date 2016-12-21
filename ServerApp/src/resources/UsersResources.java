@@ -78,7 +78,9 @@ public class UsersResources {
 		SqlFunctions sql = new SqlFunctions();
 		User foundUser = sql.findUserByEmail(User.convertToObject(user));
 		if(foundUser!=null){
+			System.out.println(User.convertToString(foundUser));
 			return User.convertToString(foundUser); 
+			
 		}
 		JsonObject jsonObject= new JsonObject();
 		jsonObject.addProperty("result", false);
@@ -173,12 +175,19 @@ public class UsersResources {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getAllInsulinDosesForUser(String user){
 		String listString ="";
+		System.out.println("All doses sync");
 		User userObj = User.convertToObject(user); 
 		SqlFunctions sql = new SqlFunctions();
 		List<InsulinDose> insulinDose = sql.getAllInslinDoses(userObj);
 		if(insulinDose !=null){
 			listString=InsulinDose.convertListToJson(insulinDose);
 			}
+		else{
+			JsonObject jsonObject= new JsonObject();
+			jsonObject.addProperty("result", false);
+			listString = jsonObject.toString();
+		}
+		System.out.println(listString);
 		return listString; 		
 	}  
 	
