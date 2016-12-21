@@ -129,7 +129,7 @@ public class SqlFunctions {
 	public Boolean insertMeal(Meal meal) {
 		if (meal.validate()) {
 			String SQL_Statment = "INSERT INTO " + Meal._Meal_TABLE + " (" + Meal._TYPE + "," + Meal._DESCRIPTION + ","
-					+ Meal._IMAGE + "," + Meal._USERS_ID + "," + Meal._DATE_TIME + "," + ") VALUES(?,?,?,?, ?) ";
+					+ Meal._IMAGE + ", " + Meal._USERS_ID + ", " + Meal._DATE_TIME + ") VALUES(?,?,?,?,?)";
 			try {
 				if (this.DBConn.Open()) {
 					// ** create statement

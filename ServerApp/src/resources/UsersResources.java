@@ -1,5 +1,9 @@
 package resources;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -10,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
  
 import com.google.gson.JsonObject;
+import com.sun.jersey.core.util.Base64;
 
 import controllers.SqlFunctions;
 import dataModel.Categories;
@@ -108,18 +113,43 @@ public class UsersResources {
 	
 	// user meal submit request
 	
+	//Convert a Base64 string and create a file
+    private byte[] convertFile(String file_string) throws IOException{
+        byte[] bytes = Base64.decode(file_string);
+        return bytes;
+    }
+	
 	@POST
 	@PermitAll
 	@Path("/meal")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean submitMeal(String mealInput){
+	public String submitMeal(String mealInput){
+		//TODO: Authenticate
 		Meal meal = Meal.convertToObject(mealInput);
+		System.out.println("UId: "+meal.getUsers_id()+"\nTitle: "+meal.getType()+"\nDescription: "+meal.getDescription());
 		SqlFunctions sql = new SqlFunctions();
-		//TODO: Finish Decoding Image
-		if(sql.insertMeal(meal))
-			return true;
-		return false; 		
+		try{
+			byte[] decoded = convertFile(meal.getImage());
+			File f = new File("\\images\\"+meal.getUsers_id()+"_"+new SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date())+".jpg");
+			f.getParentFile().mkdirs();
+			FileOutputStream fileOutputStream =
+	                new FileOutputStream(f);
+		    fileOutputStream.write(decoded);
+		    fileOutputStream.flush();
+		    fileOutputStream.close();
+		    meal.setImage(f.getAbsolutePath());
+			//TODO: Finish Decoding Image
+			if(sql.insertMeal(meal)){
+				JsonObject json = new JsonObject();
+				json.addProperty("result", "success");
+				return json.toString();
+			}
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		JsonObject json = new JsonObject();
+		return json.toString(); 		
 	}
 	// user insulin dose submit request 
 	@POST
