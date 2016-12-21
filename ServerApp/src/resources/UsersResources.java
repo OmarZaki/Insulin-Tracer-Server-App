@@ -111,8 +111,10 @@ public class UsersResources {
 	@Path("/meal")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean submitMeal(Meal meal){
+	public boolean submitMeal(String mealInput){
+		Meal meal = Meal.convertToObject(mealInput);
 		SqlFunctions sql = new SqlFunctions();
+		//TODO: Finish Decoding Image
 		if(sql.insertMeal(meal))
 			return true;
 		return false; 		

@@ -1,7 +1,12 @@
 package dataModel;
 
-import java.sql.Date;
+import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.google.gson.Gson;
+
+@XmlRootElement
 public class Meal {
 	
 	public final static String _Meal_TABLE="Meal";
@@ -71,6 +76,13 @@ public class Meal {
 	}
 	public void setDate_time(Date date_time) {
 		this.date_time = date_time;
+	}
+	
+	public static Meal convertToObject(String jsonObject) {
+		Gson gson = new Gson();
+		Meal meal = gson.fromJson(jsonObject, Meal.class);
+		return meal;
+
 	}
 	
 }

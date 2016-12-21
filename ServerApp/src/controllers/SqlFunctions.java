@@ -138,7 +138,7 @@ public class SqlFunctions {
 					preparedStatement.setString(2, meal.getDescription());
 					preparedStatement.setString(3, meal.getImage());
 					preparedStatement.setInt(4, meal.getUsers_id());
-					preparedStatement.setDate(5, meal.getDate_time());
+					preparedStatement.setDate(5, new java.sql.Date(meal.getDate_time().getTime()));
 					int result = preparedStatement.executeUpdate();
 
 					// ** close the connection
