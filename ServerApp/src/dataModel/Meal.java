@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @XmlRootElement
 public class Meal {
@@ -92,7 +93,7 @@ public class Meal {
 	 * @return
 	 */
 	public static String convertListToJson(List<Meal> meals) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
 		String mealsAsString = gson.toJson(meals);
 		return mealsAsString;
 	}

@@ -138,7 +138,7 @@ public class SqlFunctions {
 					preparedStatement.setString(2, meal.getDescription());
 					preparedStatement.setString(3, meal.getImage());
 					preparedStatement.setInt(4, meal.getUsers_id());
-					preparedStatement.setDate(5, new java.sql.Date(meal.getDate_time().getTime()));
+					preparedStatement.setDate(5, new Date(meal.getDate_time().getTime()));
 					int result = preparedStatement.executeUpdate();
 
 					// ** close the connection
@@ -202,14 +202,14 @@ public class SqlFunctions {
 	public Boolean insertCategories(Categories categories) {
 		if (categories.validate()) {
 			String SQL_Statment = "INSERT INTO " + Categories._Categories_TABLE + " (" + Categories._VALUE + ","
-					+ Categories._DATE_TIME + "," + Categories._USERS_ID + "," + Categories._CATEGORY_NAME_ID + ","
+					+ Categories._DATE_TIME + "," + Categories._USERS_ID + "," + Categories._CATEGORY_NAME_ID
 					+ ") VALUES(?,?,?,?) ";
 			try {
 				if (this.DBConn.Open()) {
 					// ** create statement
 					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(SQL_Statment);
 					preparedStatement.setString(1, categories.getValue());
-					preparedStatement.setDate(2, categories.getDate_time());
+					preparedStatement.setDate(2, new Date(categories.getDate_time().getTime()));
 					preparedStatement.setInt(3, categories.getUsers_id());
 					preparedStatement.setInt(4, categories.getCategory_name_id());
 					int result = preparedStatement.executeUpdate();
@@ -221,7 +221,7 @@ public class SqlFunctions {
 					}
 				}
 			} catch (SQLException SQL_ex) {
-				System.out.println("[SqlFunctions.submitMeal] Error Inserting new Reminder");
+				System.out.println("[SqlFunctions.submitCategories] Error Inserting new Reminder");
 				System.out.println(SQL_ex.getMessage());
 			}
 		} else {
@@ -389,6 +389,37 @@ public class SqlFunctions {
 		}
 		
 		return allMeals;
+	}
+	
+	public List<Categories> getAllCategories(User user) {
+		// TODO 1. Find User by its email, Use User's ID to retrieve user's dose records 
+		List<Categories> allCategories = null;
+		User originalUser=findUserByEmail(user); 
+		if(originalUser!= null){
+			String sqlStatementGetAllUserCategories = "SELECT * FROM "+ Categories._Categories_TABLE + " WHERE "+ InsulinDose._USERS_ID +"=?";
+			try{
+				if(this.DBConn.Open()){
+					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(sqlStatementGetAllUserCategories); 
+					preparedStatement.setInt(1, originalUser.getId());
+					ResultSet result = preparedStatement.executeQuery(); 
+					allCategories = new ArrayList<Categories>();
+					while(result.next()){
+						Categories categories= new Categories();
+						categories.setId(result.getInt(Categories._ID));
+						categories.setCategory_name_id(result.getInt(Categories._CATEGORY_NAME_ID));
+						categories.setValue(result.getString(Categories._VALUE));
+						categories.setDate_time(result.getDate(Categories._DATE_TIME));
+						categories.setUsers_id(result.getInt(Categories._USERS_ID));
+						allCategories.add(categories);
+					}
+					this.DBConn.Close();
+				}
+			}catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+			}
+		}
+		
+		return allCategories;
 	}
 
 }

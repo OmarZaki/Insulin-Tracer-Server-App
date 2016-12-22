@@ -171,12 +171,17 @@ public class UsersResources {
 		@Path("/categories")
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces(MediaType.APPLICATION_JSON)
-		public boolean submitCategories(Categories categories){
+		public String submitCategories(String categoriesInput){
+			Categories categories = Categories.convertToObject(categoriesInput);
+			System.out.println("UId: "+categories.getUsers_id()+"\nValue: "+categories.getValue()+"\nCategory Name Id: "+categories.getCategory_name_id());
 			SqlFunctions sql = new SqlFunctions();
 			if(sql.insertCategories(categories)){
-				return true;
+				JsonObject json = new JsonObject();
+				json.addProperty("result", "success");
+				return json.toString();
 			}
-			return false;
+			JsonObject json = new JsonObject();
+			return json.toString(); 
 		}
 	
 	// user messages request 
@@ -259,6 +264,29 @@ public class UsersResources {
 		}
 		System.out.println(listString);
 		return listString; 		
-	}  
+	}
+	
+	@POST
+	@PermitAll
+	@Path("/allCategories")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getAllCategoriesForUser(String user){
+		String listString ="";
+		System.out.println("All meals sync");
+		User userObj = User.convertToObject(user); 
+		SqlFunctions sql = new SqlFunctions();
+		List<Categories> categories = sql.getAllCategories(userObj);
+		if(categories !=null){
+			listString=Categories.convertListToJson(categories);
+			}
+		else{
+			JsonObject jsonObject= new JsonObject();
+			jsonObject.addProperty("result", false);
+			listString = jsonObject.toString();
+		}
+		System.out.println(listString);
+		return listString; 		
+	}
 	
 }
