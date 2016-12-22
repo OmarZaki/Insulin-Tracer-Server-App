@@ -238,5 +238,27 @@ public class UsersResources {
 		return jsonObject.toString(); 		
 	}  
 	
+	@POST
+	@PermitAll
+	@Path("/allMeals")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getAllMealsForUser(String user){
+		String listString ="";
+		System.out.println("All meals sync");
+		User userObj = User.convertToObject(user); 
+		SqlFunctions sql = new SqlFunctions();
+		List<Meal> meals = sql.getAllMeals(userObj);
+		if(meals !=null){
+			listString=Meal.convertListToJson(meals);
+			}
+		else{
+			JsonObject jsonObject= new JsonObject();
+			jsonObject.addProperty("result", false);
+			listString = jsonObject.toString();
+		}
+		System.out.println(listString);
+		return listString; 		
+	}  
 	
 }

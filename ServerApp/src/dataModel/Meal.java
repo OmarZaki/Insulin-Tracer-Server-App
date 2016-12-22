@@ -1,6 +1,7 @@
 package dataModel;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -84,5 +85,17 @@ public class Meal {
 		return meal;
 
 	}
+	
+	/**
+	 * convert ArrayList to JSON string 
+	 * @param insulinDose
+	 * @return
+	 */
+	public static String convertListToJson(List<Meal> meals) {
+		Gson gson = new Gson();
+		String mealsAsString = gson.toJson(meals);
+		return mealsAsString;
+	}
+	
 	
 }

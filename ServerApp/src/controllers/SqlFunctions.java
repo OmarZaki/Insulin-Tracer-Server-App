@@ -354,5 +354,41 @@ public class SqlFunctions {
 		return taken;
 	}
 	
+	/**
+	 * get all meals for a specific user. 
+	 * @param user
+	 * @return
+	 */
+	public List<Meal> getAllMeals(User user) {
+		// TODO 1. Find User by its email, Use User's ID to retrieve user's dose records 
+		List<Meal> allMeals = null;
+		User originalUser=findUserByEmail(user); 
+		if(originalUser!= null){
+			String sqlStatementGetAllUserMeals = "SELECT * FROM "+ Meal._Meal_TABLE + " WHERE "+ InsulinDose._USERS_ID +"=?";
+			try{
+				if(this.DBConn.Open()){
+					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(sqlStatementGetAllUserMeals); 
+					preparedStatement.setInt(1, originalUser.getId());
+					ResultSet result = preparedStatement.executeQuery(); 
+					allMeals = new ArrayList<Meal>();
+					while(result.next()){
+						Meal meal= new Meal();
+						meal.setId(result.getInt(Meal._ID));
+						meal.setType(result.getString(Meal._TYPE));
+						meal.setDescription(result.getString(Meal._DESCRIPTION));
+						meal.setDate_time(result.getDate(Meal._DATE_TIME));
+						meal.setImage(result.getString(Meal._IMAGE));
+						meal.setUsers_id(result.getInt(Meal._USERS_ID));
+						allMeals.add(meal);
+					}
+					this.DBConn.Close();
+				}
+			}catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+			}
+		}
+		
+		return allMeals;
+	}
 
 }
