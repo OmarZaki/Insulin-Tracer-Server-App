@@ -2,6 +2,9 @@ package dataModel;
 
 import java.sql.Date;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class Messages {
 	
 	public final static String _Messages_TABLE="Messages";
@@ -45,6 +48,22 @@ public class Messages {
 		if(this.getDate_time()!=null && this.getText()!=null && this.getUsers_id()>0)
 			return true;
 		return false;
+	}
+	
+	public static String convertToJson(Messages insertedMessage) {
+		Gson gson = new GsonBuilder()
+	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .create();
+		String userStringObject= gson.toJson(insertedMessage); 
+		return userStringObject;
+	}
+	
+	public static Messages convertToObject(String Json){
+		Gson gson = new  GsonBuilder()
+	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .create();
+		Messages message = gson.fromJson(Json, Messages.class);
+		return message;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class InsulinDose {
 
@@ -80,7 +81,9 @@ public class InsulinDose {
 	 * @return
 	 */
 	public static String convertListToJson(List<InsulinDose> insulinDose) {
-		Gson gson = new Gson();
+		Gson gson = new  GsonBuilder()
+	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .create();
 		String insulinDoseAsString = gson.toJson(insulinDose);
 		return insulinDoseAsString;
 	}
@@ -91,7 +94,9 @@ public class InsulinDose {
 	 * @return
 	 */
 	public static InsulinDose convertStringToObject(String insulinDoseAsString){
-		Gson gson = new Gson();
+		Gson gson = new  GsonBuilder()
+	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .create();
 		InsulinDose dose = gson.fromJson(insulinDoseAsString, InsulinDose.class);
 		return dose;
 	}
@@ -101,7 +106,9 @@ public class InsulinDose {
 	 * @return
 	 */
 	public String convertObjectToString(InsulinDose insulinDose){
-		Gson gson = new Gson(); 
+		Gson gson = new  GsonBuilder()
+	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .create(); 
 		String dose= gson.toJson(insulinDose);
 		return dose;
 	}

@@ -3,12 +3,12 @@ package resources;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
-import javax.ws.rs.Consumes; 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
- 
+
 import com.google.gson.JsonObject;
 
 import controllers.SqlFunctions;
@@ -19,15 +19,16 @@ import dataModel.Messages;
 import dataModel.User;
 
 /**
- * This class contains all User resources 
+ * This class contains all User resources
  * 
  * @author OMAR
  *
- */ 
+ */
 @Path("/users")
 public class UsersResources {
 
 	private SqlFunctions sql;
+
 	/**
 	 * 
 	 * @param user
@@ -38,129 +39,136 @@ public class UsersResources {
 	@Path("/register")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String regisrationRequest(String user){
+	public String regisrationRequest(String user) {
 		System.out.println("Registration is here ! ");
-		System.out.println(user); 
-		User userObj = User.convertToObject(user); 
+		System.out.println(user);
+		User userObj = User.convertToObject(user);
 		sql = new SqlFunctions();
-		User registeredUser= sql.registratNewUser(userObj);
-		return User.convertToString(registeredUser) ;
+		User registeredUser = sql.registratNewUser(userObj);
+		return User.convertToString(registeredUser);
 	}
+
 	@POST
 	@PermitAll
 	@Path("/IsEmailExist")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String CheckIfEmailIsExist(String user){
+	public String CheckIfEmailIsExist(String user) {
 		System.out.println("Check if the email is exist! ");
-//		System.out.println(user); 
-		User userObj = User.convertToObject(user); 
+		// System.out.println(user);
+		User userObj = User.convertToObject(user);
 		sql = new SqlFunctions();
-		Boolean IsExsist= sql.IsUserExsist(userObj);
+		Boolean IsExsist = sql.IsUserExsist(userObj);
 		// set JSON as String object.
-		JsonObject jsonObject = new JsonObject(); 
+		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("result", IsExsist);
 		System.out.println(jsonObject.toString());
 		return jsonObject.toString();
-		
+
 	}
-	
+
 	// user registration request
-	// user logging in request 
-	
+	// user logging in request
+
 	@POST
 	@PermitAll
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String login(String user){
+	public String login(String user) {
 		System.out.println(user);
 		SqlFunctions sql = new SqlFunctions();
 		User foundUser = sql.findUserByEmail(User.convertToObject(user));
-		if(foundUser!=null){
+		if (foundUser != null) {
 			System.out.println(User.convertToString(foundUser));
-			return User.convertToString(foundUser); 
-			
+			return User.convertToString(foundUser);
+
 		}
-		JsonObject jsonObject= new JsonObject();
+		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("result", false);
-		return jsonObject.toString(); 		
+		return jsonObject.toString();
 	}
-	
+
 	/***
-	 * This method is meant to test the Login functionality,
-	 * which is why it is currently commented.
+	 * This method is meant to test the Login functionality, which is why it is
+	 * currently commented.
+	 * 
 	 * @return
 	 */
 	/*
-	@GET
-	@PermitAll
-	@Path("/loginTest")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public String loginTest(){
-		SqlFunctions sql = new SqlFunctions();
-		if(sql.findUserByEmail("this@email.com")!=null)
-			return "Found it";
-		return "Nothing";
-	}
-	*/
-	
+	 * @GET
+	 * 
+	 * @PermitAll
+	 * 
+	 * @Path("/loginTest")
+	 * 
+	 * @Consumes(MediaType.APPLICATION_JSON)
+	 * 
+	 * @Produces(MediaType.APPLICATION_JSON) public String loginTest(){
+	 * SqlFunctions sql = new SqlFunctions();
+	 * if(sql.findUserByEmail("this@email.com")!=null) return "Found it"; return
+	 * "Nothing"; }
+	 */
+
 	// user meal submit request
-	
+
 	@POST
 	@PermitAll
 	@Path("/meal")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean submitMeal(Meal meal){
+	public boolean submitMeal(Meal meal) {
 		SqlFunctions sql = new SqlFunctions();
-		if(sql.insertMeal(meal))
+		if (sql.insertMeal(meal))
 			return true;
-		return false; 		
+		return false;
 	}
-	// user insulin dose submit request 
+
+	// user insulin dose submit request
 	@POST
 	@PermitAll
 	@Path("/insulin")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean submitInsulin(InsulinDose insulinDose){
+	public boolean submitInsulin(InsulinDose insulinDose) {
 		SqlFunctions sql = new SqlFunctions();
-		if(sql.submitInsulinDose(insulinDose)){
+		if (sql.submitInsulinDose(insulinDose)) {
 			return true;
 		}
 		return false;
 	}
-	
-	//user categories request
-		@POST
-		@PermitAll
-		@Path("/categories")
-		@Consumes(MediaType.APPLICATION_JSON)
-		@Produces(MediaType.APPLICATION_JSON)
-		public boolean submitCategories(Categories categories){
-			SqlFunctions sql = new SqlFunctions();
-			if(sql.insertCategories(categories)){
-				return true;
-			}
-			return false;
-		}
-	
-	// user messages request 
+
+	// user categories request
 	@POST
 	@PermitAll
-	@Path("/messages")
+	@Path("/categories")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean submitMessages(Messages messages){
+	public boolean submitCategories(Categories categories) {
 		SqlFunctions sql = new SqlFunctions();
-		if(sql.insertMessages(messages))
+		if (sql.insertCategories(categories)) {
 			return true;
-		return false; 		
-	} 
-		
-	//-------> InsulinDoses Resources <-------------//
+		}
+		return false;
+	}
+
+	// user messages request
+	@POST
+	@PermitAll
+	@Path("/insertMessage")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String submitMessages(String message) {
+		String returnedValue="";
+		Messages messageObj = Messages.convertToObject(message);
+		SqlFunctions sql = new SqlFunctions();
+		Messages insertedMessage = sql.insertMessages(messageObj); 
+		if(insertedMessage!= null)
+			returnedValue = Messages.convertToJson(insertedMessage);
+		return returnedValue;
+	}
+
+	// -------> InsulinDoses Resources <-------------//
 	/**
 	 * 
 	 * @param user
@@ -171,40 +179,37 @@ public class UsersResources {
 	@Path("/allDoses")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getAllInsulinDosesForUser(String user){
-		String listString ="";
+	public String getAllInsulinDosesForUser(String user) {
+		String listString = "";
 		System.out.println("All doses sync");
-		User userObj = User.convertToObject(user); 
+		User userObj = User.convertToObject(user);
 		SqlFunctions sql = new SqlFunctions();
 		List<InsulinDose> insulinDose = sql.getAllInslinDoses(userObj);
-		if(insulinDose !=null){
-			listString=InsulinDose.convertListToJson(insulinDose);
-			}
-		else{
-			JsonObject jsonObject= new JsonObject();
+		if (insulinDose != null) {
+			listString = InsulinDose.convertListToJson(insulinDose);
+			System.out.println(listString);
+		} else {
+			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("result", false);
 			listString = jsonObject.toString();
 		}
-		System.out.println(listString);
-		return listString; 		
-	}  
-	
-	
+		return listString;
+	}
+
 	@POST
 	@PermitAll
 	@Path("/setTakenTrue")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String setTakenTrue(String dose){
-		JsonObject jsonObject= new JsonObject(); // returned object ; 
-		InsulinDose doseObj = InsulinDose.convertStringToObject(dose); 
+	public String setTakenTrue(String dose) {
+		JsonObject jsonObject = new JsonObject(); // returned object ;
+		InsulinDose doseObj = InsulinDose.convertStringToObject(dose);
 		SqlFunctions sql = new SqlFunctions();
 		boolean taken = sql.UpdateInsulinDoseTakenFlag(doseObj);
-		if(taken !=false){	
+		if (taken != false) {
 			jsonObject.addProperty("result", true);
 		}
-		return jsonObject.toString(); 		
-	}  
-	
-	
+		return jsonObject.toString();
+	}
+
 }

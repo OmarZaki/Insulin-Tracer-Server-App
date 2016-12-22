@@ -32,16 +32,16 @@ public class SqlFunctions {
 	 * 
 	 */
 	public User registratNewUser(User user) {
-	 
+
 		if (user.validate()) {
 			String SQL_Statment = "INSERT INTO " + User._USER_TABLE + "(" + User._FIRST_NAME + "," + User._LAST_NAME
 					+ "," + User._EMAIL + "," + User._PASSWORD + "," + User._PHONE_NUMBER + "," + User._TYPE + ","
-					+ User._ADMIN + "," + User._CREATION_DATE + "," + User._TOKEN + "," + User._ADDRESS +","+ User._BIRTH_DATE
-					+ ") VALUES(?,?,?,?,?,?,?,?,?,?,?) ";
+					+ User._ADMIN + "," + User._CREATION_DATE + "," + User._TOKEN + "," + User._ADDRESS + ","
+					+ User._BIRTH_DATE + ") VALUES(?,?,?,?,?,?,?,?,?,?,?) ";
 			try {
 				if (this.DBConn.Open()) {
 					// ** create statement
-					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(SQL_Statment);
+					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(SQL_Statment,Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setString(1, user.getFirstName());
 					preparedStatement.setString(2, user.getLastName());
 					preparedStatement.setString(3, user.getEmail());
@@ -52,16 +52,18 @@ public class SqlFunctions {
 					preparedStatement.setDate(8, new java.sql.Date(user.getCreationDate().getTime()));
 					preparedStatement.setString(9, user.getToken());
 					preparedStatement.setString(10, user.getAddress());
-					preparedStatement.setDate(11,new java.sql.Date(user.getBirthDate().getTime()));
+					preparedStatement.setDate(11, new java.sql.Date(user.getBirthDate().getTime()));
 					int result = preparedStatement.executeUpdate();
 
 					// ** close the connection
 					DBConn.Close();
-					if (result !=0 ) {
-						user.setId(result);
-					
-					}else{
-						user= null;
+					if (result != 0) {
+						ResultSet rs = preparedStatement.getGeneratedKeys();
+						rs.next();
+						user.setId(rs.getInt(1));
+
+					} else {
+						user = null;
 					}
 				}
 			} catch (SQLException SQL_ex) {
@@ -82,17 +84,17 @@ public class SqlFunctions {
 	 * @return
 	 */
 	public User findUserByEmail(User user) {
-	 
+
 		if (user.validateEmailFormat(user.getEmail())) {
-			String sqlStatement = "SELECT * FROM " + User._USER_TABLE + " WHERE (" + User._EMAIL + "= ? "+" AND " +User._PASSWORD+"=?"+")";
+			String sqlStatement = "SELECT * FROM " + User._USER_TABLE + " WHERE (" + User._EMAIL + "= ? " + " AND "
+					+ User._PASSWORD + "=?" + ")";
 			try {
 				if (this.DBConn.Open()) {
 					PreparedStatement prepStatement = this.DBConn.conn.prepareStatement(sqlStatement);
 					prepStatement.setString(1, user.getEmail());
 					prepStatement.setString(2, user.getPassword());
 					ResultSet result = prepStatement.executeQuery();
-					if(result.next()){
-						System.out.println(result.getString(5));
+					if (result.next()) {
 						User foundUser = new User();
 						foundUser.setId(result.getInt(User._ID));
 						foundUser.setFirstName(result.getString(User._FIRST_NAME));
@@ -104,12 +106,12 @@ public class SqlFunctions {
 						foundUser.setBirthDate(new Date(result.getDate(User._BIRTH_DATE).getTime()));
 						foundUser.setToken(result.getString(User._TOKEN));
 						foundUser.setCreationDate(new Date(result.getDate(User._CREATION_DATE).getTime()));
-						foundUser.setAdmin(result.getBoolean(User._ADMIN));				
+						foundUser.setAdmin(result.getBoolean(User._ADMIN));
 						return foundUser;
-						
+
 					}
 					this.DBConn.Close();
-					
+
 					return null;
 				}
 			} catch (SQLException e) {
@@ -237,34 +239,46 @@ public class SqlFunctions {
 	 * @param meal
 	 * @return
 	 */
-	public Boolean insertMessages(Messages messages) {
+	public Messages insertMessages(Messages messages) {
+		Messages insertedMessage = null;
 		if (messages.validate()) {
 			String SQL_Statment = "INSERT INTO " + Messages._Messages_TABLE + " (" + Messages._TEXT + ","
-					+ Messages._DATE_TIME + "," + Messages._USERS_ID + "," + ") VALUES(?,?,?) ";
+					+ Messages._DATE_TIME + "," + Messages._USERS_ID  + ") VALUES(?,?,?) ";
 			try {
 				if (this.DBConn.Open()) {
 					// ** create statement
-					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(SQL_Statment);
+					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(SQL_Statment,Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setString(1, messages.getText());
-					preparedStatement.setDate(2, messages.getDate_time());
+					preparedStatement.setDate(2, new java.sql.Date(messages.getDate_time().getTime()));
 					preparedStatement.setInt(3, messages.getUsers_id());
 					int result = preparedStatement.executeUpdate();
+					if (result != 0) {
+						// set and Message object to return ;
+						ResultSet rs = preparedStatement.getGeneratedKeys();
+						rs.next();
+						
+						insertedMessage = new Messages();
+						insertedMessage.setId(rs.getInt(1));
+						insertedMessage.setText(messages.getText());
+						insertedMessage.setUsers_id(messages.getUsers_id());
+						insertedMessage.setDate_time(messages.getDate_time());
+						System.out.println("Inserting messages into database ! ");
+					}
 
 					// ** close the connection
 					DBConn.Close();
-					if (result == 1) {
-						return true;
-					}
+
 				}
 			} catch (SQLException SQL_ex) {
-				System.out.println("[SqlFunctions.submitMeal] Error Inserting new Reminder");
+				System.out.println("[SqlFunctions.InsertMessage] Error Inserting new Message");
 				System.out.println(SQL_ex.getMessage());
 			}
 		} else {
 			//
 			System.out.println("DATA_VALIATION_FORMAT_ERROR");
 		}
-		return false;
+		return insertedMessage;
+		
 	}
 
 	public Boolean IsUserExsist(User userObj) {
@@ -274,11 +288,11 @@ public class SqlFunctions {
 				if (this.DBConn.Open()) {
 					// ** create statement
 					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(SQL_Statement);
-					preparedStatement.setString(1, userObj.getEmail()); 
+					preparedStatement.setString(1, userObj.getEmail());
 					ResultSet result = preparedStatement.executeQuery();
-					if(result.next()){
-						return true; 
-					}else{
+					if (result.next()) {
+						return true;
+					} else {
 						return false;
 					}
 				}
@@ -292,67 +306,73 @@ public class SqlFunctions {
 
 		return null;
 	}
+
 	/**
-	 * get all insulin dose for a specific user. 
+	 * get all insulin dose for a specific user.
+	 * 
 	 * @param user
 	 * @return
 	 */
 	public List<InsulinDose> getAllInslinDoses(User user) {
-		// TODO 1. Find User by its email, Use User's ID to retrieve user's dose records 
+		// TODO 1. Find User by its email, Use User's ID to retrieve user's dose
+		// records
 		List<InsulinDose> allDoses = null;
-		User originalUser=findUserByEmail(user); 
-		if(originalUser!= null){
-			String sqlStatementGetAllUserDoses = "SELECT * FROM "+ InsulinDose._InsulinDose_TABLE + " WHERE "+ InsulinDose._USERS_ID +"=?";
-			try{
-				if(this.DBConn.Open()){
-					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(sqlStatementGetAllUserDoses); 
+		User originalUser = findUserByEmail(user);
+		if (originalUser != null) {
+			String sqlStatementGetAllUserDoses = "SELECT * FROM " + InsulinDose._InsulinDose_TABLE + " WHERE "
+					+ InsulinDose._USERS_ID + "=?";
+			try {
+				if (this.DBConn.Open()) {
+					PreparedStatement preparedStatement = this.DBConn.conn
+							.prepareStatement(sqlStatementGetAllUserDoses);
 					preparedStatement.setInt(1, originalUser.getId());
-					ResultSet result = preparedStatement.executeQuery(); 
+					ResultSet result = preparedStatement.executeQuery();
 					allDoses = new ArrayList<InsulinDose>();
-					while(result.next()){
-						InsulinDose dose= new InsulinDose();
+					while (result.next()) {
+						InsulinDose dose = new InsulinDose();
 						dose.setId(result.getInt(InsulinDose._ID));
 						dose.setQuantity(result.getInt(InsulinDose._QUANTITY));
-						dose.setDate_time(result.getDate(InsulinDose._DATE_TIME));
+						dose.setDate_time(new Date(result.getDate(InsulinDose._DATE_TIME).getTime()));
 						dose.setTaken(result.getBoolean(InsulinDose._TAKEN));
 						dose.setUsers_id(result.getInt(InsulinDose._USERS_ID));
 						allDoses.add(dose);
 					}
 					this.DBConn.Close();
 				}
-			}catch(SQLException ex) {
-					System.out.println(ex.getMessage());
+			} catch (SQLException ex) {
+				System.out.println(ex.getMessage());
 			}
 		}
-		
+
 		return allDoses;
 	}
+
 	/**
-	 * change the Taken value of specific dose ; 
+	 * change the Taken value of specific dose ;
+	 * 
 	 * @param doseObj
 	 * @return
 	 */
 	public boolean UpdateInsulinDoseTakenFlag(InsulinDose doseObj) {
-		
-		boolean  taken = false; 
-		String sqlStatement = "UPDATE " + InsulinDose._InsulinDose_TABLE + " SET "+InsulinDose._TAKEN +"=?" 
-		+ " WHERE " + InsulinDose._ID+"=?";
-		try{
-		if(this.DBConn.Open()){
-			PreparedStatement preparedStatement= this.DBConn.conn.prepareStatement(sqlStatement);
-			preparedStatement.setBoolean(1, doseObj.getTaken());
-			preparedStatement.setInt(2, doseObj.getOriginal_id());
-			long row = preparedStatement.executeUpdate();
-			if(row !=0){
-				taken = true;
+
+		boolean taken = false;
+		String sqlStatement = "UPDATE " + InsulinDose._InsulinDose_TABLE + " SET " + InsulinDose._TAKEN + "=?"
+				+ " WHERE " + InsulinDose._ID + "=?";
+		try {
+			if (this.DBConn.Open()) {
+				PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(sqlStatement);
+				preparedStatement.setBoolean(1, doseObj.getTaken());
+				preparedStatement.setInt(2, doseObj.getId());
+				long row = preparedStatement.executeUpdate();
+				if (row != 0) {
+					taken = true;
+				}
 			}
-		}
-		}catch(SQLException ex){
+		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		}
-		
+
 		return taken;
 	}
-	
 
 }

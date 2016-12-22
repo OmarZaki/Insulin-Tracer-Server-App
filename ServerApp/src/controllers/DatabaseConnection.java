@@ -34,6 +34,7 @@ public class DatabaseConnection {
 	 */
 	public Boolean Open() {
 		try {
+			System.out.println("Opening Connection !");
 			// Register JDBC driver
 			Class.forName(JDBC_DRIVER);
 			// Open a connection
