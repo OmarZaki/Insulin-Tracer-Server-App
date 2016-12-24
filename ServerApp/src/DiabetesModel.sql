@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `diabetesdb`.`users` (
   `admin` TINYINT(1) NULL DEFAULT NULL,
   `type` TINYINT(1) NULL DEFAULT NULL,
   `token` VARCHAR(45) NULL DEFAULT NULL,
+  `birth_date` DATETIME NULL DEFAULT NULL,
   `creation_date` DATETIME NULL DEFAULT NULL,
   `address` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
@@ -61,6 +62,9 @@ DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `diabetesdb`.`category_name`
+-- 1 - Heart Rate
+-- 2 - Medication
+-- 3 - Blood Sugar
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `diabetesdb`.`category_name` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -68,6 +72,10 @@ CREATE TABLE IF NOT EXISTS `diabetesdb`.`category_name` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+INSERT INTO category_name (title) VALUES ("Heart Rate");
+INSERT INTO category_name (title) VALUES ("Medication");
+INSERT INTO category_name (title) VALUES ("Blood Sugar");
 
 
 -- -----------------------------------------------------
