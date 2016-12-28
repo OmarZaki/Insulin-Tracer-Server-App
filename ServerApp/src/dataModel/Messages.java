@@ -1,6 +1,7 @@
 package dataModel;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -65,5 +66,9 @@ public class Messages {
 		Messages message = gson.fromJson(Json, Messages.class);
 		return message;
 	}
-
+	public static String convertListToJson(List<Messages> Messages) {
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
+		String messagesAsString = gson.toJson(Messages);
+		return messagesAsString;
+	}
 }

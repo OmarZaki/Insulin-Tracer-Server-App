@@ -295,7 +295,9 @@ public class SqlFunctions {
 					} else {
 						return false;
 					}
+					
 				}
+				this.DBConn.Close();
 			} catch (SQLException SQL_ex) {
 				System.out.println("[SqlFunctions.submitMeal] Error Inserting new Reminder");
 				System.out.println(SQL_ex.getMessage());
@@ -367,11 +369,12 @@ public class SqlFunctions {
 				if (row != 0) {
 					taken = true;
 				}
+				this.DBConn.Close();
 			}
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
 		}
-
+		
 		return taken;
 	}
 	
@@ -441,6 +444,37 @@ public class SqlFunctions {
 		}
 		
 		return allCategories;
+	}
+	
+	
+	public List<Messages> getAllMessages(User user) {
+		// TODO 1. Find User by its email, Use User's ID to retrieve user's dose records 
+		List<Messages> allMessages = null;
+		User originalUser=findUserByEmail(user); 
+		if(originalUser!= null){
+			String sqlStatementGetAllUserMessages = "SELECT * FROM "+ Messages._Messages_TABLE + " WHERE "+ Messages._USERS_ID +"=?";
+			try{
+				if(this.DBConn.Open()){
+					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(sqlStatementGetAllUserMessages); 
+					preparedStatement.setInt(1, originalUser.getId());
+					ResultSet result = preparedStatement.executeQuery(); 
+					allMessages = new ArrayList<Messages>();
+					while(result.next()){
+						Messages messages= new Messages();
+						messages.setId(result.getInt(Messages._ID));
+						messages.setText(result.getString(Messages._TEXT));
+						messages.setDate_time(result.getDate(Messages._DATE_TIME));
+						messages.setUsers_id(result.getInt(Messages._USERS_ID));
+						allMessages.add(messages);
+					}
+					this.DBConn.Close();
+				}
+			}catch(SQLException ex) {
+					System.out.println(ex.getMessage());
+			}
+		}
+		
+		return allMessages;
 	}
 
 }

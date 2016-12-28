@@ -177,7 +177,7 @@ public class UsersResources {
 		@Path("/categories")
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces(MediaType.APPLICATION_JSON)
-		public String submitCategories(String categoriesInput){
+	public String submitCategories(String categoriesInput){
 			Categories categories = Categories.convertToObject(categoriesInput);
 			System.out.println("UId: "+categories.getUsers_id()+"\nValue: "+categories.getValue()+"\nCategory Name Id: "+categories.getCategory_name_id());
 			SqlFunctions sql = new SqlFunctions();
@@ -291,6 +291,28 @@ public class UsersResources {
 		List<Categories> categories = sql.getAllCategories(userObj);
 		if(categories !=null){
 			listString=Categories.convertListToJson(categories);
+			}
+		else{
+			JsonObject jsonObject= new JsonObject();
+			jsonObject.addProperty("result", false);
+			listString = jsonObject.toString();
+		}
+		System.out.println(listString);
+		return listString; 		
+	} 
+	@POST
+	@PermitAll
+	@Path("/allMessages")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getAllMessagesForUser(String user){
+		String listString ="";
+		System.out.println("All meals sync");
+		User userObj = User.convertToObject(user); 
+		SqlFunctions sql = new SqlFunctions();
+		List<Messages> messages = sql.getAllMessages(userObj);
+		if(messages !=null){
+			listString=Messages.convertListToJson(messages);
 			}
 		else{
 			JsonObject jsonObject= new JsonObject();
