@@ -1,6 +1,5 @@
 package dataModel;
 
-import java.sql.Date;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -23,7 +22,7 @@ public class InsulinDose {
 	private int id;
 	private float quantity;
 	private boolean taken;
-	private Date date_time;
+	private java.util.Date date_time;
 	private int Users_id;
 	private int original_id;
 	
@@ -46,10 +45,10 @@ public class InsulinDose {
 	public void setTaken(boolean taken) {
 		this.taken = taken;
 	}
-	public Date getDate_time() {
+	public java.util.Date getDate_time() {
 		return date_time;
 	}
-	public void setDate_time(Date date_time) {
+	public void setDate_time(java.util.Date date_time) {
 		this.date_time = date_time;
 	}
 	public int getUsers_id() {
@@ -82,7 +81,7 @@ public class InsulinDose {
 	 */
 	public static String convertListToJson(List<InsulinDose> insulinDose) {
 		Gson gson = new  GsonBuilder()
-	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .setDateFormat("yyyy-MM-dd HH:mm:ss.S")
 	               .create();
 		String insulinDoseAsString = gson.toJson(insulinDose);
 		return insulinDoseAsString;
@@ -95,7 +94,7 @@ public class InsulinDose {
 	 */
 	public static InsulinDose convertStringToObject(String insulinDoseAsString){
 		Gson gson = new  GsonBuilder()
-	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .setDateFormat("yyyy-MM-dd HH:mm:ss.S")
 	               .create();
 		InsulinDose dose = gson.fromJson(insulinDoseAsString, InsulinDose.class);
 		return dose;
@@ -107,7 +106,7 @@ public class InsulinDose {
 	 */
 	public String convertObjectToString(InsulinDose insulinDose){
 		Gson gson = new  GsonBuilder()
-	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .setDateFormat("yyyy-MM-dd HH:mm:ss.S")
 	               .create(); 
 		String dose= gson.toJson(insulinDose);
 		return dose;

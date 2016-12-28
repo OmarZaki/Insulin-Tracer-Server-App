@@ -140,7 +140,7 @@ public class SqlFunctions {
 					preparedStatement.setString(2, meal.getDescription());
 					preparedStatement.setString(3, meal.getImage());
 					preparedStatement.setInt(4, meal.getUsers_id());
-					preparedStatement.setDate(5, new Date(meal.getDate_time().getTime()));
+					preparedStatement.setTimestamp(5, new Timestamp(meal.getDate_time().getTime()));
 					int result = preparedStatement.executeUpdate();
 
 					// ** close the connection
@@ -211,7 +211,7 @@ public class SqlFunctions {
 					// ** create statement
 					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(SQL_Statment);
 					preparedStatement.setString(1, categories.getValue());
-					preparedStatement.setDate(2, new Date(categories.getDate_time().getTime()));
+					preparedStatement.setTimestamp(2, new Timestamp(categories.getDate_time().getTime()));
 					preparedStatement.setInt(3, categories.getUsers_id());
 					preparedStatement.setInt(4, categories.getCategory_name_id());
 					int result = preparedStatement.executeUpdate();
@@ -249,7 +249,7 @@ public class SqlFunctions {
 					// ** create statement
 					PreparedStatement preparedStatement = this.DBConn.conn.prepareStatement(SQL_Statment,Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setString(1, messages.getText());
-					preparedStatement.setDate(2, new java.sql.Date(messages.getDate_time().getTime()));
+					preparedStatement.setTimestamp(2, new java.sql.Timestamp(messages.getDate_time().getTime()));
 					preparedStatement.setInt(3, messages.getUsers_id());
 					int result = preparedStatement.executeUpdate();
 					if (result != 0) {
@@ -332,7 +332,7 @@ public class SqlFunctions {
 						InsulinDose dose = new InsulinDose();
 						dose.setId(result.getInt(InsulinDose._ID));
 						dose.setQuantity(result.getInt(InsulinDose._QUANTITY));
-						dose.setDate_time(new Date(result.getDate(InsulinDose._DATE_TIME).getTime()));
+						dose.setDate_time(result.getTimestamp(InsulinDose._DATE_TIME));
 						dose.setTaken(result.getBoolean(InsulinDose._TAKEN));
 						dose.setUsers_id(result.getInt(InsulinDose._USERS_ID));
 						allDoses.add(dose);
@@ -397,7 +397,7 @@ public class SqlFunctions {
 						meal.setId(result.getInt(Meal._ID));
 						meal.setType(result.getString(Meal._TYPE));
 						meal.setDescription(result.getString(Meal._DESCRIPTION));
-						meal.setDate_time(result.getDate(Meal._DATE_TIME));
+						meal.setDate_time(result.getTimestamp(Meal._DATE_TIME));
 						meal.setImage(result.getString(Meal._IMAGE));
 						meal.setUsers_id(result.getInt(Meal._USERS_ID));
 						allMeals.add(meal);
@@ -429,7 +429,7 @@ public class SqlFunctions {
 						categories.setId(result.getInt(Categories._ID));
 						categories.setCategory_name_id(result.getInt(Categories._CATEGORY_NAME_ID));
 						categories.setValue(result.getString(Categories._VALUE));
-						categories.setDate_time(result.getDate(Categories._DATE_TIME));
+						categories.setDate_time(result.getTimestamp(Categories._DATE_TIME));
 						categories.setUsers_id(result.getInt(Categories._USERS_ID));
 						allCategories.add(categories);
 					}

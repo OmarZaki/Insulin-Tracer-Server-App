@@ -1,6 +1,5 @@
 package dataModel;
 
-import java.sql.Date;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,7 +16,7 @@ public class Messages {
 	
 	private int id;
 	private String text;
-	private Date date_time;
+	private java.util.Date date_time;
 	private int Users_id;
 	public int getId() {
 		return id;
@@ -31,10 +30,10 @@ public class Messages {
 	public void setText(String text) {
 		this.text = text;
 	}
-	public Date getDate_time() {
+	public java.util.Date getDate_time() {
 		return date_time;
 	}
-	public void setDate_time(Date date_time) {
+	public void setDate_time(java.util.Date date_time) {
 		this.date_time = date_time;
 	}
 	public int getUsers_id() {

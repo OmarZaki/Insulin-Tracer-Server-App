@@ -186,7 +186,7 @@ public class User {
 	 */
 	public static User convertToObject(String jsonObject) {
 		Gson gson = new  GsonBuilder()
-	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .setDateFormat("yyyy-MM-dd HH:mm:ss.S")
 	               .create();
 		User user = gson.fromJson(jsonObject, User.class);
 		return user;
@@ -201,7 +201,7 @@ public class User {
 	 */
 	public static String convertToString(User user){
 		Gson gson = new GsonBuilder()
-	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .setDateFormat("yyyy-MM-dd HH:mm:ss.S")
 	               .create();
 		String userStringObject= gson.toJson(user); 
 		return userStringObject;
