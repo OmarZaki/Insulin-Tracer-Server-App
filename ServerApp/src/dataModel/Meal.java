@@ -81,7 +81,7 @@ public class Meal {
 	}
 	
 	public static Meal convertToObject(String jsonObject) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 		Meal meal = gson.fromJson(jsonObject, Meal.class);
 		return meal;
 
@@ -93,7 +93,7 @@ public class Meal {
 	 * @return
 	 */
 	public static String convertListToJson(List<Meal> meals) {
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 		String mealsAsString = gson.toJson(meals);
 		return mealsAsString;
 	}

@@ -61,13 +61,15 @@ public class Categories {
 	}
 	
 	public static String convertListToJson(List<Categories> categories) {
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 		String categoriesAsString = gson.toJson(categories);
 		return categoriesAsString;
 	}
 	
 	public static Categories convertToObject(String jsonObject) {
-		Gson gson = new Gson();
+		Gson gson =new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .create();
 		Categories categories = gson.fromJson(jsonObject, Categories.class);
 		return categories;
 

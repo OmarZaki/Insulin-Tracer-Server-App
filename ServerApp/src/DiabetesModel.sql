@@ -73,9 +73,9 @@ CREATE TABLE IF NOT EXISTS `diabetesdb`.`category_name` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-INSERT INTO category_name (title) VALUES ("Heart Rate");
-INSERT INTO category_name (title) VALUES ("Medication");
-INSERT INTO category_name (title) VALUES ("Blood Sugar");
+INSERT INTO category_name (id, title) VALUES (1,"Heart Rate");
+INSERT INTO category_name (id, title) VALUES (2,"Medication");
+INSERT INTO category_name (id, title) VALUES (3,"Blood Sugar");
 
 
 -- -----------------------------------------------------
