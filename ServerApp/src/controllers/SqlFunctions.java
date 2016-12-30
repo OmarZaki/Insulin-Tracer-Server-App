@@ -463,7 +463,7 @@ public class SqlFunctions {
 						Messages messages= new Messages();
 						messages.setId(result.getInt(Messages._ID));
 						messages.setText(result.getString(Messages._TEXT));
-						messages.setDate_time(result.getDate(Messages._DATE_TIME));
+						messages.setDate_time(result.getTimestamp(Messages._DATE_TIME));
 						messages.setUsers_id(result.getInt(Messages._USERS_ID));
 						allMessages.add(messages);
 					}

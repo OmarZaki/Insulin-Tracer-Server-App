@@ -52,7 +52,7 @@ public class Messages {
 	
 	public static String convertToJson(Messages insertedMessage) {
 		Gson gson = new GsonBuilder()
-	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .setDateFormat("yyyy-MM-dd HH:mm:ss.S")
 	               .create();
 		String userStringObject= gson.toJson(insertedMessage); 
 		return userStringObject;
@@ -60,13 +60,13 @@ public class Messages {
 	
 	public static Messages convertToObject(String Json){
 		Gson gson = new  GsonBuilder()
-	               .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+	               .setDateFormat("yyyy-MM-dd HH:mm:ss.S")
 	               .create();
 		Messages message = gson.fromJson(Json, Messages.class);
 		return message;
 	}
 	public static String convertListToJson(List<Messages> Messages) {
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 		String messagesAsString = gson.toJson(Messages);
 		return messagesAsString;
 	}
